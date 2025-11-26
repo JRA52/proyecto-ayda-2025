@@ -261,7 +261,7 @@ void CellClassifier::count_cells()
                 {
                     n_neu++; diag = "NEUTROPHIL";
                 } 
-                else else if(c.area < 120)
+                else if(c.area < 120)
                 {  
                     n_lin++; diag = "LYMPHOCYTE";
                 }
