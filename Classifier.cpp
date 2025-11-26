@@ -66,7 +66,11 @@ SegmentType CellClassifier::classify_color(double r, double g, double b, int siz
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 void CellClassifier::analizar_segments(Designar::SLList<GraphType>& segments, int width, int height) 
+=======
+void CellClassifier::analyze_segments(Designar::SLList<GraphType>& segments, int width, int height) 
+>>>>>>> Stashed changes
 =======
 void CellClassifier::analyze_segments(Designar::SLList<GraphType>& segments, int width, int height) 
 >>>>>>> Stashed changes
@@ -105,7 +109,11 @@ void CellClassifier::analyze_segments(Designar::SLList<GraphType>& segments, int
             stats_list.push_back(st);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             if (st.tipo != SegmentType::BACKGROUND) 
+=======
+            if (st.type != SegmentType::BACKGROUND) 
+>>>>>>> Stashed changes
 =======
             if (st.type != SegmentType::BACKGROUND) 
 >>>>>>> Stashed changes
@@ -122,7 +130,11 @@ void CellClassifier::analyze_segments(Designar::SLList<GraphType>& segments, int
     for (auto& st : stats_list) 
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if (st.tipo == SegmentType::BACKGROUND) continue;
+=======
+        if (st.type == SegmentType::BACKGROUND) continue;
+>>>>>>> Stashed changes
 =======
         if (st.type == SegmentType::BACKGROUND) continue;
 >>>>>>> Stashed changes
@@ -177,7 +189,11 @@ void CellClassifier::count_cells()
     for (size_t i = 0; i < stats_list.size(); ++i) 
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if (stats_list[i].tipo != SegmentType::CORE)
+=======
+        if (stats_list[i].type != SegmentType::CORE)
+>>>>>>> Stashed changes
 =======
         if (stats_list[i].type != SegmentType::CORE)
 >>>>>>> Stashed changes
@@ -204,7 +220,11 @@ void CellClassifier::count_cells()
             for (size_t j = 0; j < stats_list.size(); ++j) 
             {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 if (stats_list[j].tipo != SegmentType::CORE || processed[j] || stats_list[j].size < MIN_TAM_CORE) continue;
+=======
+                if (stats_list[j].type != SegmentType::CORE || processed[j] || stats_list[j].size < MIN_TAM_CORE) continue;
+>>>>>>> Stashed changes
 =======
                 if (stats_list[j].type != SegmentType::CORE || processed[j] || stats_list[j].size < MIN_TAM_CORE) continue;
 >>>>>>> Stashed changes
@@ -265,7 +285,11 @@ void CellClassifier::count_cells()
         std::string diag;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if (c.vecinos[SegmentType::EOS_GRANULES] > 40) 
+=======
+        if (c.neighbors[SegmentType::EOS_GRANULES] > 40) 
+>>>>>>> Stashed changes
 =======
         if (c.neighbors[SegmentType::EOS_GRANULES] > 40) 
 >>>>>>> Stashed changes

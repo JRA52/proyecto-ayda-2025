@@ -22,7 +22,11 @@ class CellClassifier
 
 public:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     void analizar_segments(Designar::SLList<GraphType>& segments, int width, int height);
+=======
+    void analyze_segments(Designar::SLList<GraphType>& segments, int width, int height);
+>>>>>>> Stashed changes
 =======
     void analyze_segments(Designar::SLList<GraphType>& segments, int width, int height);
 >>>>>>> Stashed changes

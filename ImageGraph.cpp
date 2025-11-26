@@ -12,7 +12,11 @@ bool ImageGraphBuilder::load_and_build(const std::string& filename)
     if (!data) 
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         std::cerr << "Error loading image: " << filename << std::endl;
+=======
+        std::cerr << "Error while loading image: " << filename << std::endl;
+>>>>>>> Stashed changes
 =======
         std::cerr << "Error while loading image: " << filename << std::endl;
 >>>>>>> Stashed changes

@@ -8,15 +8,21 @@ enum class SegmentType
     BACKGROUND,
     CORE,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     EOS_GRANULES,            // Rojo
     NEUTRAL_CYTOPLASM,      // Rosa pálido
     LYMPHOCYTE_CYTOPLASM,   // Azul claro brillante
     MONOCYTE_CYTOPLASM,    // Gris azulado 
 =======
+=======
+>>>>>>> Stashed changes
     EOS_GRANULES,            // RED
     NEUTRAL_CYTOPLASM,       // Pale pink
     LYMPHOCYTE_CYTOPLASM,    // Bright light blue
     MONOCYTE_CYTOPLASM,      // bluish gray
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     UNKNOWN
 };

@@ -1,9 +1,14 @@
 DESIGNAR = /home/juanr/DOCUMENTOS/ayuda/DeSiGNAR-2.0.0
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 # -------------------- VARIABLES --------------------
 
 # ANTES: CXX = clang++ -std=c++14
+=======
+
+#  CXX = clang++ -std=c++14
+>>>>>>> Stashed changes
 =======
 
 #  CXX = clang++ -std=c++14
@@ -19,9 +24,12 @@ FRONTEND_LDFLAGS = -pthread -lstdc++fs
 INCLUDE = -I. -I $(DESIGNAR)/include
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 # Librerías para el Backend (DESIGNAR)
 BACKEND_LIBS = -L $(DESIGNAR)/lib -lDesignar
 =======
+=======
+>>>>>>> Stashed changes
 # (DESIGNAR)
 BACKEND_LIBS = -L $(DESIGNAR)/lib -lDesignar
 
@@ -39,6 +47,7 @@ FRONTEND_OBJS = main.o
 # -------------------- PRINCIPAL TARGETS --------------------
 
 all: $(BACKEND_TARGET) $(FRONTEND_TARGET)
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
 # Librerías para el Frontend (SFML + X11)
@@ -78,6 +87,20 @@ $(FRONTEND_TARGET): $(FRONTEND_OBJS)
 # Compila y enlaza el ejecutable del Backend (backend)
 $(BACKEND_TARGET): $(BACKEND_OBJS)
 	$(CXX) $(FLAGS) $(INCLUDE) -o $@ $(BACKEND_OBJS) $(BACKEND_LIBS)
+=======
+
+
+$(FRONTEND_TARGET): $(FRONTEND_OBJS)
+	# Incluimos FRONTEND_LDFLAGS antes de las librerías.
+	$(CXX) $(FLAGS) $(INCLUDE) -o $@ $(FRONTEND_OBJS) $(FRONTEND_LDFLAGS) $(FRONTEND_LIBS)
+
+$(BACKEND_TARGET): $(BACKEND_OBJS)
+	$(CXX) $(FLAGS) $(INCLUDE) -o $@ $(BACKEND_OBJS) $(BACKEND_LIBS)
+
+
+main.o: main.cpp
+	$(CXX) -c $(FLAGS) $(INCLUDE) main.cpp
+>>>>>>> Stashed changes
 
 # -------------------- REGLAS DE COMPILACIÓN (.o) --------------------
 
@@ -96,17 +119,23 @@ Classifier.o: Classifier.hpp Definitions.hpp Classifier.cpp
 	$(CXX) -c $(FLAGS) $(INCLUDE) Classifier.cpp
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 backend.o: backend.cpp ImageGraph.hpp Segmenter.hpp Classifier.hpp Definitions.hpp
 	$(CXX) -c $(FLAGS) $(INCLUDE) backend.cpp
 
 # -------------------- LIMPIEZA --------------------
 =======
+=======
+>>>>>>> Stashed changes
 Diagnostic.o: Diagnostic.hpp Definitions.hpp Diagnostic.cpp
 	$(CXX) -c $(FLAGS) $(INCLUDE) Diagnostic.cpp
 
 backend.o: backend.cpp ImageGraph.hpp Segmenter.hpp Classifier.hpp Definitions.hpp Diagnostic.hpp 
 	$(CXX) -c $(FLAGS) $(INCLUDE) backend.cpp
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 .PHONY: clean
