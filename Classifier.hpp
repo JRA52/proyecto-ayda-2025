@@ -21,8 +21,8 @@ class CellClassifier
     std::vector<std::vector<int>> pixel_segment_map;
 
 public:
-    void analizar_segmentos(Designar::SLList<GraphType>& segmentos, int width, int height);
-    void contar_celulas();
+    void analizar_segments(Designar::SLList<GraphType>& segments, int width, int height);
+    void count_cells();
     
 private:
     SegmentType clasificar_color(double r, double g, double b, int size);

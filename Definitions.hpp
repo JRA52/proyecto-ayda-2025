@@ -2,16 +2,19 @@
 
 #include <cmath>
 
+//PONER NOMBRES EN INGLES
 enum class SegmentType 
 {
-    FONDO,
-    NUCLEO,
-    GRANULO_EOS,            // Rojo
-    CITOPLASMA_NEUTRO,      // Rosa pálido
-    CITOPLASMA_LINFOCITO,   // Azul claro brillante
-    CITOPLASMA_MONOCITO,    // Gris azulado 
-    DESCONOCIDO
+    BACKGROUND,
+    CORE,
+    EOS_GRANULES,            // Rojo
+    NEUTRAL_CYTOPLASM,      // Rosa pálido
+    LYMPHOCYTE_CYTOPLASM,   // Azul claro brillante
+    MONOCYTE_CYTOPLASM,    // Gris azulado 
+    UNKNOWN
 };
+
+
 
 struct PixelInfo 
 {

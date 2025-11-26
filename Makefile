@@ -1,26 +1,53 @@
-DESIGNAR = /home/ose1234/Ayda/DeSiGNAR-2.0.0
+DESIGNAR = /home/juanr/DOCUMENTOS/ayuda/DeSiGNAR-2.0.0
 
-CXX = clang++ -std=c++14
+# -------------------- VARIABLES --------------------
 
+# ANTES: CXX = clang++ -std=c++14
+CXX = clang++ -std=c++17
 
 WARN = -Wall -Wextra -Wno-sign-compare -Wno-write-strings -Wno-parentheses -Wno-invalid-source-encoding -Wno-cast-align
 
 FLAGS = -DDEBUG -D_GLIBCXX__PTHREADS -g -O0 $(WARN)
 
+FRONTEND_LDFLAGS = -pthread -lstdc++fs
+
 INCLUDE = -I. -I $(DESIGNAR)/include
 
-LIBS = -L $(DESIGNAR)/lib -lDesignar
+# Librerías para el Backend (DESIGNAR)
+BACKEND_LIBS = -L $(DESIGNAR)/lib -lDesignar
 
+# Librerías para el Frontend (SFML + X11)
+FRONTEND_LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lX11
 
-OBJS = ImageGraph.o Segmenter.o Classifier.o main.o
+# Targets Finales
+BACKEND_TARGET = backend
+FRONTEND_TARGET = app
 
-TARGET = CellCounter
+# Objetos
+BACKEND_OBJS = ImageGraph.o Segmenter.o Classifier.o backend.o
+FRONTEND_OBJS = main.o
 
-all: $(TARGET)
+# -------------------- TARGETS PRINCIPALES --------------------
 
-$(TARGET): $(OBJS)
-	$(CXX) $(FLAGS) $(INCLUDE) -o $@ $(OBJS) $(LIBS)
+all: $(BACKEND_TARGET) $(FRONTEND_TARGET)
 
+# Compila y enlaza el ejecutable del Frontend (app)
+
+$(FRONTEND_TARGET): $(FRONTEND_OBJS)
+	# Incluimos FRONTEND_LDFLAGS antes de las librerías.
+	$(CXX) $(FLAGS) $(INCLUDE) -o $@ $(FRONTEND_OBJS) $(FRONTEND_LDFLAGS) $(FRONTEND_LIBS)
+
+# Compila y enlaza el ejecutable del Backend (backend)
+$(BACKEND_TARGET): $(BACKEND_OBJS)
+	$(CXX) $(FLAGS) $(INCLUDE) -o $@ $(BACKEND_OBJS) $(BACKEND_LIBS)
+
+# -------------------- REGLAS DE COMPILACIÓN (.o) --------------------
+
+# Regla para el objeto del Frontend
+main.o: main.cpp
+	$(CXX) -c $(FLAGS) $(INCLUDE) main.cpp
+
+# Reglas para los objetos del Backend (sin swaps)
 ImageGraph.o: ImageGraph.hpp Definitions.hpp ImageGraph.cpp
 	$(CXX) -c $(FLAGS) $(INCLUDE) ImageGraph.cpp
 
@@ -30,9 +57,11 @@ Segmenter.o: Segmenter.hpp Definitions.hpp Segmenter.cpp
 Classifier.o: Classifier.hpp Definitions.hpp Classifier.cpp
 	$(CXX) -c $(FLAGS) $(INCLUDE) Classifier.cpp
 
-main.o: main.cpp ImageGraph.hpp Segmenter.hpp Classifier.hpp Definitions.hpp
-	$(CXX) -c $(FLAGS) $(INCLUDE) main.cpp
+backend.o: backend.cpp ImageGraph.hpp Segmenter.hpp Classifier.hpp Definitions.hpp
+	$(CXX) -c $(FLAGS) $(INCLUDE) backend.cpp
+
+# -------------------- LIMPIEZA --------------------
 
 .PHONY: clean
 clean:
-	$(RM) *~ $(TARGET) *.o
+	$(RM) *~ $(BACKEND_TARGET) $(FRONTEND_TARGET) *.o

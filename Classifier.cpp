@@ -26,52 +26,52 @@ SegmentType CellClassifier::clasificar_color(double r, double g, double b, int s
 {
     if (size < 3)
     {
-        return SegmentType::FONDO; 
+        return SegmentType::BACKGROUND; 
     }    
     if (size > 1500)
     {
-        return SegmentType::FONDO;
+        return SegmentType::BACKGROUND;
     }  
 
-    double intensidad = r + g + b;
+    double intensity = r + g + b;
 
-    if (intensidad < 50)
+    if (intensity < 50)
     {
-        return SegmentType::FONDO; 
+        return SegmentType::BACKGROUND; 
     }  
-    if (intensidad > 610)
+    if (intensity > 610)
     {
-        return SegmentType::FONDO;
+        return SegmentType::BACKGROUND;
     }  
 
-    bool es_oscuro = (intensidad < 550); 
-    bool es_violeta = (g < r - 5) && (g < b - 5); 
+    bool is_dark = (intensity < 550); 
+    bool is_violet = (g < r - 5) && (g < b - 5); 
     
-    if (es_oscuro && es_violeta)
+    if (is_dark && is_violet)
     {
-        return SegmentType::NUCLEO;
+        return SegmentType::CORE;
     } 
 
     if (r > b + 45 && r > g + 45)
     {
-        return SegmentType::GRANULO_EOS;
+        return SegmentType::EOS_GRANULES;
     } 
     
-    if (intensidad < 680 && (b > r || std::abs(r-b) < 20) && std::abs(r-g) > 10) 
+    if (intensity < 680 && (b > r || std::abs(r-b) < 20) && std::abs(r-g) > 10) 
     {
-        return SegmentType::CITOPLASMA_LINFOCITO; 
+        return SegmentType::LYMPHOCYTE_CYTOPLASM; 
     }
 
-    return SegmentType::FONDO; 
+    return SegmentType::BACKGROUND; 
 }
 
-void CellClassifier::analizar_segmentos(Designar::SLList<GraphType>& segmentos, int width, int height) 
+void CellClassifier::analizar_segments(Designar::SLList<GraphType>& segments, int width, int height) 
 {
     pixel_segment_map.assign(height, std::vector<int>(width, -1));
     stats_list.clear();
 
     int seg_id = 0;
-    segmentos.for_each([&](GraphType& g) 
+    segments.for_each([&](GraphType& g) 
     {
         double sr=0, sg=0, sb=0;
         int count = 0;
@@ -100,7 +100,7 @@ void CellClassifier::analizar_segmentos(Designar::SLList<GraphType>& segmentos, 
             st.circularity = 0.0; 
             stats_list.push_back(st);
 
-            if (st.tipo != SegmentType::FONDO) 
+            if (st.tipo != SegmentType::BACKGROUND) 
             {
                 g.for_each_node([&](Designar::Node<GraphType>* n) 
                 {
@@ -113,7 +113,7 @@ void CellClassifier::analizar_segmentos(Designar::SLList<GraphType>& segmentos, 
 
     for (auto& st : stats_list) 
     {
-        if (st.tipo == SegmentType::FONDO) continue;
+        if (st.tipo == SegmentType::BACKGROUND) continue;
         int perimeter = 0;
         for (int y = st.min_y; y <= st.max_y; ++y) 
         {
@@ -154,40 +154,40 @@ void CellClassifier::analizar_segmentos(Designar::SLList<GraphType>& segmentos, 
     }
 }
 
-void CellClassifier::contar_celulas() 
+void CellClassifier::count_cells() 
 {
-    std::vector<bool> procesado(stats_list.size(), false);
-    std::vector<Cluster> celulas;
+    std::vector<bool> processed(stats_list.size(), false);
+    std::vector<Cluster> cells;
 
-    double DISTANCIA_MAX = 7.5;  
-    int TAMANO_MIN_NUCLEO = 5;   
+    double MAX_DISTANCE = 7.5;  
+    int MIN_TAM_CORE = 5;   
 
     for (size_t i = 0; i < stats_list.size(); ++i) 
     {
-        if (stats_list[i].tipo != SegmentType::NUCLEO)
+        if (stats_list[i].tipo != SegmentType::CORE)
         {
             continue;
         } 
-        if (stats_list[i].size < TAMANO_MIN_NUCLEO)
+        if (stats_list[i].size < MIN_TAM_CORE)
         {
             continue;
         }  
-        if (procesado[i])
+        if (processed[i])
         {
             continue;
         } 
 
         Cluster c;
         c.ids.push_back(i);
-        procesado[i] = true;
+        processed[i] = true;
 
-        bool cambio = true;
-        while(cambio) 
+        bool swap = true;
+        while(swap) 
         {
-            cambio = false;
+            swap = false;
             for (size_t j = 0; j < stats_list.size(); ++j) 
             {
-                if (stats_list[j].tipo != SegmentType::NUCLEO || procesado[j] || stats_list[j].size < TAMANO_MIN_NUCLEO) continue;
+                if (stats_list[j].tipo != SegmentType::CORE || processed[j] || stats_list[j].size < MIN_TAM_CORE) continue;
 
                 for (int id_c : c.ids) 
                 {
@@ -198,23 +198,23 @@ void CellClassifier::contar_celulas()
                     double cx2 = (s2.min_x + s2.max_x)/2.0, cy2 = (s2.min_y + s2.max_y)/2.0;
                     double dist = std::sqrt(std::pow(cx1-cx2, 2) + std::pow(cy1-cy2, 2));
 
-                    if (dist < DISTANCIA_MAX) 
+                    if (dist < MAX_DISTANCE) 
                     {
                         c.ids.push_back(j);
-                        procesado[j] = true;
-                        cambio = true;
+                        processed[j] = true;
+                        swap = true;
                         break; 
                     }
                 }
             }
         }
 
-        double circ_acumulada = 0;
+        double accumulated_circle = 0;
         for (int id : c.ids) 
         {
             auto& s = stats_list[id];
             c.area += s.size;
-            circ_acumulada += s.circularity;
+            accumulated_circle += s.circularity;
             
             int range = 4;
             for (int y = std::max(0, s.min_y - range); y <= std::min((int)pixel_segment_map.size()-1, s.max_y + range); ++y) 
@@ -226,15 +226,15 @@ void CellClassifier::contar_celulas()
                 }
             }
         }
-        c.circ_sum = circ_acumulada / c.ids.size();
-        celulas.push_back(c);
+        c.circ_sum = accumulated_circle / c.ids.size();
+        cells.push_back(c);
     }
 
     int n_neu=0, n_eos=0, n_lin=0, n_mon=0;
     
-    std::cout << "\n--- ANALISIS DE CLUSTERS ---" << std::endl;
+    std::cout << "\n--- CLUSTER ANALYSIS ---" << std::endl;
 
-    for (auto& c : celulas) 
+    for (auto& c : cells) 
     {
         if (c.area < 35)
         {
@@ -244,13 +244,13 @@ void CellClassifier::contar_celulas()
         int n_partes = c.ids.size();
         std::string diag;
 
-        if (c.vecinos[SegmentType::GRANULO_EOS] > 40) 
+        if (c.vecinos[SegmentType::EOS_GRANULES] > 40) 
         { 
-            n_eos++; diag = "EOSINÓFILO";
+            n_eos++; diag = "EOSINOPHIL";
         }
         else if (c.area > 140) 
         {
-            n_mon++; diag = "MONOCITO";
+            n_mon++; diag = "MONOCYTE";
         }
 
         else 
@@ -259,21 +259,21 @@ void CellClassifier::contar_celulas()
             {  
                 if (c.area > 55) 
                 {
-                    n_neu++; diag = "NEUTRÓFILO";
+                    n_neu++; diag = "NEUTROPHIL";
                 } else 
                 {  
-                    n_lin++; diag = "LINFOCITO (Reasignado por tamaño)";
+                    n_lin++; diag = "LYMPHOCYTE";
                 }
             }
         }
         
     }
 
-    std::cout << "\n=== CONTEO FINAL ===" << std::endl;
-    std::cout << "Neutrófilos: " << n_neu << std::endl;
-    std::cout << "Monocitos:   " << n_mon << std::endl;
-    std::cout << "Linfocitos:  " << n_lin << std::endl;
-    std::cout << "Eosinófilos: " << n_eos << std::endl;
+    std::cout << "\n=== FINAL COUNT ===" << std::endl;
+    std::cout << "NEUTROPHILS: " << n_neu << std::endl;
+    std::cout << "MONOCYTES:   " << n_mon << std::endl;
+    std::cout << "LYMPHOCYTES:  " << n_lin << std::endl;
+    std::cout << "EOSINOPHILS: " << n_eos << std::endl;
     std::cout << "TOTAL:       " << (n_neu + n_mon + n_lin + n_eos) << std::endl;
 
     g_total_neu += n_neu;

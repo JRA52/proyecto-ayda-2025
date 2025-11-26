@@ -11,13 +11,13 @@ bool ImageGraphBuilder::load_and_build(const std::string& filename)
 
     if (!data) 
     {
-        std::cerr << "Error cargando imagen: " << filename << std::endl;
+        std::cerr << "Error loading image: " << filename << std::endl;
         return false;
     }
 
     if (channels < 3) 
     {
-        std::cerr << "La imagen debe ser RGB" << std::endl;
+        std::cerr << "The image must be RGB" << std::endl;
         stbi_image_free(data);
         return false;
     }

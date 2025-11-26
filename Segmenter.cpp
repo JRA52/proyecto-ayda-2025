@@ -7,9 +7,7 @@ using AdArcIt = Designar::AdArcIt<GraphType>;
 
 Designar::SLList<GraphType> GraphSegmenter::segmentar(const GraphType& source_graph, double umbral) 
 {
-    std::cout << "Iniciando segmentacion rapida (Iterativa BFS Correcta)..." << std::endl;
-
-    int rotos = 0;
+    //int broken_cells = 0;
     
     for (Designar::ArcIt<GraphType> it(source_graph); it.has_current(); it.next()) 
     {
@@ -18,16 +16,16 @@ Designar::SLList<GraphType> GraphSegmenter::segmentar(const GraphType& source_gr
         if (a->get_info().weight > umbral) 
         {
             a->visit(Designar::GraphTag::COMPONENT); 
-            rotos++;
+            //broken_cells++;
         } 
         else 
         {
             a->unvisit(Designar::GraphTag::COMPONENT);
         }
     }
-    std::cout << "Conexiones cortadas: " << rotos << std::endl;
+    //std::cout << "Conexiones cortadas: " << broken_cells << std::endl;
 
-    Designar::SLList<GraphType> segmentos;
+    Designar::SLList<GraphType> segments;
     
     source_graph.reset_node_cookies();
     for (Designar::NodeIt<GraphType> it(source_graph); it.has_current(); it.next()) 
@@ -37,59 +35,59 @@ Designar::SLList<GraphType> GraphSegmenter::segmentar(const GraphType& source_gr
 
     for (Designar::NodeIt<GraphType> it(source_graph); it.has_current(); it.next()) 
     {
-        auto* semilla = it.get_current();
+        auto* seed = it.get_current();
 
-        if (semilla->is_visited(Designar::GraphTag::COMPONENT))
+        if (seed->is_visited(Designar::GraphTag::COMPONENT))
         {
             continue;
         } 
 
-        GraphType subgrafo;
+        GraphType subgraph;
         
-        std::vector<Designar::Node<GraphType>*> cola;
+        std::vector<Designar::Node<GraphType>*> queue;
         
-        cola.push_back(semilla);
-        semilla->visit(Designar::GraphTag::COMPONENT);
+        queue.push_back(seed);
+        seed->visit(Designar::GraphTag::COMPONENT);
 
-        std::map<Designar::Node<GraphType>*, Designar::Node<GraphType>*> mapa_nodos;
+        std::map<Designar::Node<GraphType>*, Designar::Node<GraphType>*> node_map;
 
-        mapa_nodos[semilla] = subgrafo.insert_node(semilla->get_info());
+        node_map[seed] = subgraph.insert_node(seed->get_info());
 
         size_t head = 0;
-        while(head < cola.size()) 
+        while(head < queue.size()) 
         {
-            auto* u = cola[head++];
-            auto* u_sub = mapa_nodos[u];
+            auto* u = queue[head++];
+            auto* u_sub = node_map[u];
 
             for (AdArcIt it_adj(source_graph, u); it_adj.has_current(); it_adj.next()) 
             {
-                auto* arco = it_adj.get_current();
+                auto* arc = it_adj.get_current();
 
-                if (arco->is_visited(Designar::GraphTag::COMPONENT)) continue;
+                if (arc->is_visited(Designar::GraphTag::COMPONENT)) continue;
 
                 auto* v = it_adj.get_tgt_node();
                 
                 if (!v->is_visited(Designar::GraphTag::COMPONENT)) 
                 {
                     v->visit(Designar::GraphTag::COMPONENT);
-                    cola.push_back(v);
+                    queue.push_back(v);
                     
-                    auto* v_sub = subgrafo.insert_node(v->get_info());
-                    mapa_nodos[v] = v_sub;
-                    subgrafo.insert_arc(u_sub, v_sub, arco->get_info());
+                    auto* v_sub = subgraph.insert_node(v->get_info());
+                    node_map[v] = v_sub;
+                    subgraph.insert_arc(u_sub, v_sub, arc->get_info());
                 } 
-                else if (mapa_nodos.find(v) != mapa_nodos.end()) 
+                else if (node_map.find(v) != node_map.end()) 
                 {
-                     if (subgrafo.search_arc(u_sub, mapa_nodos[v]) == nullptr) 
+                     if (subgraph.search_arc(u_sub, node_map[v]) == nullptr) 
                      {
-                        subgrafo.insert_arc(u_sub, mapa_nodos[v], arco->get_info());
+                        subgraph.insert_arc(u_sub, node_map[v], arc->get_info());
                      }
                 }
             }
         }
         
-        segmentos.append(std::move(subgrafo));
+        segments.append(std::move(subgraph));
     }
 
-    return segmentos;
+    return segments;
 }
