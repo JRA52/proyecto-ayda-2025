@@ -11,13 +11,13 @@ bool ImageGraphBuilder::load_and_build(const std::string& filename)
 
     if (!data) 
     {
-        std::cerr << "Error cargando imagen: " << filename << std::endl;
+        std::cerr << "Error while loading image: " << filename << std::endl;
         return false;
     }
 
     if (channels < 3) 
     {
-        std::cerr << "La imagen debe ser RGB" << std::endl;
+        std::cerr << "The image must be RGB" << std::endl;
         stbi_image_free(data);
         return false;
     }
@@ -60,7 +60,7 @@ bool ImageGraphBuilder::load_and_build(const std::string& filename)
             info.r = (unsigned char)(r_sum / count);
             info.g = (unsigned char)(g_sum / count);
             info.b = (unsigned char)(b_sum / count);
-            info.segmento_id = -1;
+            info.segment_id = -1;
 
             node_grid[y][x] = graph.insert_node(info);
         }

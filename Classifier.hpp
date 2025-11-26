@@ -5,7 +5,7 @@
 struct SegmentStats 
 {
     int id;
-    SegmentType tipo;
+    SegmentType type;
     int size;           
     
     int perimeter;  
@@ -21,9 +21,9 @@ class CellClassifier
     std::vector<std::vector<int>> pixel_segment_map;
 
 public:
-    void analizar_segmentos(Designar::SLList<GraphType>& segmentos, int width, int height);
-    void contar_celulas();
+    void analyze_segments(Designar::SLList<GraphType>& segments, int width, int height);
+    void count_cells();
     
 private:
-    SegmentType clasificar_color(double r, double g, double b, int size);
+    SegmentType classify_color(double r, double g, double b, int size);
 };

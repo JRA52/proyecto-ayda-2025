@@ -18,5 +18,5 @@ class GraphSegmenter
 {
 public:
 
-    Designar::SLList<GraphType> segmentar(const GraphType& source_graph, double umbral);
+    Designar::SLList<GraphType> segment(const GraphType& source_graph, double threshold);
 };

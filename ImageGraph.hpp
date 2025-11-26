@@ -6,7 +6,6 @@
 
 using GraphType = Designar::Graph<PixelInfo, EdgeInfo>;
 using NodePtr = Designar::Node<GraphType>*;
-
 class ImageGraphBuilder 
 {
     int width, height;

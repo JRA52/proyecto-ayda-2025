@@ -81,11 +81,11 @@ RECENT REVISION HISTORY:
 
  Image formats                          Extensions, features
     Sean Barrett (jpeg, png, bmp)          Jetro Lauha (stbi_info)
-    Nicolas Schulz (hdr, psd)              Martin "SpartanJ" Golini (stbi_info)
+    Niqueues Schulz (hdr, psd)              Martin "SpartanJ" Golini (stbi_info)
     Jonathan Dummer (tga)                  James "moose2000" Brown (iPhone PNG)
     Jean-Marc Lienher (gif)                Ben "Disch" Wenger (io callbacks)
     Tom Seddon (pic)                       Omar Cornut (1/2/4-bit PNG)
-    Thatcher Ulrich (psd)                  Nicolas Guillemot (vertical flip)
+    Thatcher Ulrich (psd)                  Niqueues Guillemot (vertical flip)
     Ken Miller (pgm, ppm)                  Richard Mitton (16-bit PSD)
     github:urraka (animated gif)           Junggon Kim (PNM comments)
     Christopher Forseth (animated gif)     Daniel Gibson (16-bit TGA)
@@ -6075,7 +6075,7 @@ static void *stbi__tga_load(stbi__context *s, int *x, int *y, int *comp, int req
 #endif
 
 // *************************************************************************************************
-// Photoshop PSD loader -- PD by Thatcher Ulrich, integration by Nicolas Schulz, tweaked by STB
+// Photoshop PSD loader -- PD by Thatcher Ulrich, integration by Niqueues Schulz, tweaked by STB
 
 #ifndef STBI_NO_PSD
 static int stbi__psd_test(stbi__context *s)
@@ -7082,7 +7082,7 @@ static int stbi__gif_info(stbi__context *s, int *x, int *y, int *comp)
 
 // *************************************************************************************************
 // Radiance RGBE HDR loader
-// originally by Nicolas Schulz
+// originally by Niqueues Schulz
 #ifndef STBI_NO_HDR
 static int stbi__hdr_test_core(stbi__context *s, const char *signature)
 {
@@ -7891,7 +7891,7 @@ STBIDEF int stbi_is_16_bit_from_callbacks(stbi_io_callbacks const *c, void *user
               stbi_info support from Jetro Lauha
               GIF support from Jean-Marc Lienher
               iPhone PNG-extensions from James Brown
-              warning-fixes from Nicolas Schulz and Janez Zemva (i.stbi__err. Janez (U+017D)emva)
+              warning-fixes from Niqueues Schulz and Janez Zemva (i.stbi__err. Janez (U+017D)emva)
       1.21    fix use of 'stbi_uc' in header (reported by jon blow)
       1.20    added support for Softimage PIC, by Tom Seddon
       1.19    bug in interlaced PNG corruption check (found by ryg)
@@ -7908,7 +7908,7 @@ STBIDEF int stbi_is_16_bit_from_callbacks(stbi_io_callbacks const *c, void *user
       1.10    Fixes for 64-bit (don't use "unsigned long")
               optimized upsampling by Fabian "ryg" Giesen
       1.09    Fix format-conversion for PSD code (bad global variables!)
-      1.08    Thatcher Ulrich's PSD code integrated by Nicolas Schulz
+      1.08    Thatcher Ulrich's PSD code integrated by Niqueues Schulz
       1.07    attempt to fix C++ warning/errors again
       1.06    attempt to fix C++ warning/errors again
       1.05    fix TGA loading to return correct *comp and use good luminance calc
