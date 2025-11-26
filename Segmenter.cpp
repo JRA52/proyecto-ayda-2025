@@ -5,25 +5,36 @@
 
 using AdArcIt = Designar::AdArcIt<GraphType>;
 
-Designar::SLList<GraphType> GraphSegmenter::segmentar(const GraphType& source_graph, double umbral) 
+Designar::SLList<GraphType> GraphSegmenter::segment(const GraphType& source_graph, double threshold) 
 {
+<<<<<<< Updated upstream
     //int broken_cells = 0;
     
+=======
+>>>>>>> Stashed changes
     for (Designar::ArcIt<GraphType> it(source_graph); it.has_current(); it.next()) 
     {
         auto* a = it.get_current();
         
-        if (a->get_info().weight > umbral) 
+        if (a->get_info().weight > threshold) 
         {
+<<<<<<< Updated upstream
             a->visit(Designar::GraphTag::COMPONENT); 
             //broken_cells++;
+=======
+            a->visit(Designar::GraphTag::COMPONENT);           
+>>>>>>> Stashed changes
         } 
         else 
         {
             a->unvisit(Designar::GraphTag::COMPONENT);
         }
+<<<<<<< Updated upstream
     }
     //std::cout << "Conexiones cortadas: " << broken_cells << std::endl;
+=======
+    }    
+>>>>>>> Stashed changes
 
     Designar::SLList<GraphType> segments;
     

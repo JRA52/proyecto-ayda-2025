@@ -7,10 +7,17 @@ enum class SegmentType
 {
     BACKGROUND,
     CORE,
+<<<<<<< Updated upstream
     EOS_GRANULES,            // Rojo
     NEUTRAL_CYTOPLASM,      // Rosa pálido
     LYMPHOCYTE_CYTOPLASM,   // Azul claro brillante
     MONOCYTE_CYTOPLASM,    // Gris azulado 
+=======
+    EOS_GRANULES,            // RED
+    NEUTRAL_CYTOPLASM,       // Pale pink
+    LYMPHOCYTE_CYTOPLASM,    // Bright light blue
+    MONOCYTE_CYTOPLASM,      // bluish gray
+>>>>>>> Stashed changes
     UNKNOWN
 };
 
@@ -20,7 +27,7 @@ struct PixelInfo
 {
     int x, y;
     unsigned char r, g, b;
-    int segmento_id = -1; 
+    int segment_id = -1; 
 };
 
 struct EdgeInfo 

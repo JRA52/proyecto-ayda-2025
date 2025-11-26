@@ -19,10 +19,10 @@ struct Cluster
     int area = 0;
     double x = 0, y = 0;
     double circ_sum = 0;
-    std::map<SegmentType, int> vecinos;
+    std::map<SegmentType, int> neighbors;
 };
 
-SegmentType CellClassifier::clasificar_color(double r, double g, double b, int size) 
+SegmentType CellClassifier::classify_color(double r, double g, double b, int size) 
 {
     if (size < 3)
     {
@@ -65,7 +65,11 @@ SegmentType CellClassifier::clasificar_color(double r, double g, double b, int s
     return SegmentType::BACKGROUND; 
 }
 
+<<<<<<< Updated upstream
 void CellClassifier::analizar_segments(Designar::SLList<GraphType>& segments, int width, int height) 
+=======
+void CellClassifier::analyze_segments(Designar::SLList<GraphType>& segments, int width, int height) 
+>>>>>>> Stashed changes
 {
     pixel_segment_map.assign(height, std::vector<int>(width, -1));
     stats_list.clear();
@@ -95,12 +99,16 @@ void CellClassifier::analizar_segments(Designar::SLList<GraphType>& segments, in
             st.size = count;
             st.r = sr/count; st.g = sg/count; st.b = sb/count;
             st.min_x = min_x; st.max_x = max_x; st.min_y = min_y; st.max_y = max_y;
-            st.tipo = clasificar_color(st.r, st.g, st.b, st.size);
+            st.type = classify_color(st.r, st.g, st.b, st.size);
             st.perimeter = 0;
             st.circularity = 0.0; 
             stats_list.push_back(st);
 
+<<<<<<< Updated upstream
             if (st.tipo != SegmentType::BACKGROUND) 
+=======
+            if (st.type != SegmentType::BACKGROUND) 
+>>>>>>> Stashed changes
             {
                 g.for_each_node([&](Designar::Node<GraphType>* n) 
                 {
@@ -113,7 +121,11 @@ void CellClassifier::analizar_segments(Designar::SLList<GraphType>& segments, in
 
     for (auto& st : stats_list) 
     {
+<<<<<<< Updated upstream
         if (st.tipo == SegmentType::BACKGROUND) continue;
+=======
+        if (st.type == SegmentType::BACKGROUND) continue;
+>>>>>>> Stashed changes
         int perimeter = 0;
         for (int y = st.min_y; y <= st.max_y; ++y) 
         {
@@ -164,7 +176,11 @@ void CellClassifier::count_cells()
 
     for (size_t i = 0; i < stats_list.size(); ++i) 
     {
+<<<<<<< Updated upstream
         if (stats_list[i].tipo != SegmentType::CORE)
+=======
+        if (stats_list[i].type != SegmentType::CORE)
+>>>>>>> Stashed changes
         {
             continue;
         } 
@@ -187,7 +203,11 @@ void CellClassifier::count_cells()
             swap = false;
             for (size_t j = 0; j < stats_list.size(); ++j) 
             {
+<<<<<<< Updated upstream
                 if (stats_list[j].tipo != SegmentType::CORE || processed[j] || stats_list[j].size < MIN_TAM_CORE) continue;
+=======
+                if (stats_list[j].type != SegmentType::CORE || processed[j] || stats_list[j].size < MIN_TAM_CORE) continue;
+>>>>>>> Stashed changes
 
                 for (int id_c : c.ids) 
                 {
@@ -222,7 +242,7 @@ void CellClassifier::count_cells()
                 for (int x = std::max(0, s.min_x - range); x <= std::min((int)pixel_segment_map[0].size()-1, s.max_x + range); ++x) 
                 {
                     int v_id = pixel_segment_map[y][x];
-                    if (v_id != -1 && v_id != s.id) c.vecinos[stats_list[v_id].tipo]++;
+                    if (v_id != -1 && v_id != s.id) c.neighbors[stats_list[v_id].type]++;
                 }
             }
         }
@@ -241,10 +261,14 @@ void CellClassifier::count_cells()
             continue; 
         } 
 
-        int n_partes = c.ids.size();
+        int n_parts = c.ids.size();
         std::string diag;
 
+<<<<<<< Updated upstream
         if (c.vecinos[SegmentType::EOS_GRANULES] > 40) 
+=======
+        if (c.neighbors[SegmentType::EOS_GRANULES] > 40) 
+>>>>>>> Stashed changes
         { 
             n_eos++; diag = "EOSINOPHIL";
         }
@@ -255,7 +279,7 @@ void CellClassifier::count_cells()
 
         else 
         {  
-            if (n_partes >= 3) 
+            if (n_parts >= 3) 
             {  
                 if (c.area > 55) 
                 {

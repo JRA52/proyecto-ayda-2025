@@ -11,7 +11,11 @@ bool ImageGraphBuilder::load_and_build(const std::string& filename)
 
     if (!data) 
     {
+<<<<<<< Updated upstream
         std::cerr << "Error loading image: " << filename << std::endl;
+=======
+        std::cerr << "Error while loading image: " << filename << std::endl;
+>>>>>>> Stashed changes
         return false;
     }
 
@@ -60,7 +64,7 @@ bool ImageGraphBuilder::load_and_build(const std::string& filename)
             info.r = (unsigned char)(r_sum / count);
             info.g = (unsigned char)(g_sum / count);
             info.b = (unsigned char)(b_sum / count);
-            info.segmento_id = -1;
+            info.segment_id = -1;
 
             node_grid[y][x] = graph.insert_node(info);
         }
