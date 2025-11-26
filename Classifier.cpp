@@ -248,7 +248,7 @@ void CellClassifier::count_cells()
         { 
             n_eos++; diag = "EOSINOPHIL";
         }
-        else if (c.area > 140) 
+        else if (c.area > 150) 
         {
             n_mon++; diag = "MONOCYTE";
         }
@@ -257,10 +257,11 @@ void CellClassifier::count_cells()
         {  
             if (n_parts >= 3) 
             {  
-                if (c.area > 55) 
+                if (c.area > 60) 
                 {
                     n_neu++; diag = "NEUTROPHIL";
-                } else 
+                } 
+                else else if(c.area < 120)
                 {  
                     n_lin++; diag = "LYMPHOCYTE";
                 }
